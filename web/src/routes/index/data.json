@@ -1,0 +1,51 @@
+[
+    {
+        "routerUrl": "all",
+        "navIcon": "all",
+        "navText": "All",
+        "introTitle": "code 人生",
+        "intro": "业余开发的项目，个人擅长于使用Angular、Vue，掌握React、Node.js、Java"
+    },
+    {
+        "routerUrl": "angular",
+        "navIcon": "php",
+        "navText": "Angular",
+        "introTitle": "Angular 项目",
+        "intro": "Angular 相关项目、demo"
+    },
+    {
+        "routerUrl": "vue",
+        "navIcon": "fe",
+        "navText": "Vue",
+        "introTitle": "Vue 项目",
+        "intro": "Vue 相关项目、demo"
+    },
+    {
+        "routerUrl": "react",
+        "navIcon": "java",
+        "navText": "React",
+        "introTitle": "React 项目",
+        "intro": "React 相关项目、demo"
+    },
+    {
+        "routerUrl": "nodejs",
+        "navIcon": "ios",
+        "navText": "Node.js",
+        "introTitle": "Node.js 项目",
+        "intro": "Node.js 相关项目、demo、NPM插件"
+    },
+    {
+        "routerUrl": "gitbook",
+        "navIcon": "android",
+        "navText": "GitBook",
+        "introTitle": "GitBook 书籍",
+        "intro": "GitBook 相关笔记、说明、技术文章"
+    },
+    {
+        "routerUrl": "other",
+        "navIcon": "fe",
+        "navText": "Other",
+        "introTitle": "其他相关",
+        "intro": "其他相关，博客"
+    }
+]
