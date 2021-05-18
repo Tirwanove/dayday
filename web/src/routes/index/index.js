@@ -24,7 +24,14 @@ class Main extends React.Component {
       bg_img: require('../../assets/img/2.jpg')
     }
   }
+  choose = (route) => {
+    hashHistory.push(`/${route}`)
+  }
   render() {
+    let active = {
+      backgroundColor: this.state.theme.bg_opacity,
+      color: '#fff'
+    }
     return (
       <Layout className={style.main}>
         <Sider className={style.side}>
@@ -66,12 +73,13 @@ class Main extends React.Component {
                     fontSize: 14,
                     color: '#555',
                     paddingLeft: '10px'
-                  }}>杨浩</span><Icon
+                  }}>杨浩</span>
+                  <Icon
                     type="down"
                     style={{
-        color: '#888',
-        paddingLeft: '10px'
-      }}/>
+                    color: '#888',
+                    paddingLeft: '10px'
+                  }}/>
                 </div>
                 <div className={style.icon}>
                   <Icon
@@ -89,14 +97,26 @@ class Main extends React.Component {
                   }}/>
                 </div>
               </section>
-              <Menu selectedKeys={[this.state.current]} mode="vertical">
-                <Menu.Item key="mail">
-                  <Icon type="mail"/>打卡
-                </Menu.Item>
-                <Menu.Item key="app">
-                  <Icon type="appstore"/>清单
-                </Menu.Item>
-              </Menu>
+              <ul className={style.siders}>
+                <li>
+                  <a style={this.props.location.pathname == '/list' ? active : null} onClick={this.choose.bind(this, 'list')}>
+                    <Icon
+                      type="mail"
+                      style={{
+                      paddingRight: 30,
+                      fontSize: 14
+                    }}/>打卡</a>
+                </li>
+                <li>
+                  <a style={this.props.location.pathname == '/todo' ? active : null} onClick={this.choose.bind(this, 'todo')}>
+                    <Icon
+                      type="appstore"
+                      style={{
+                      paddingRight: 30,
+                      fontSize: 14
+                    }}/>清单</a>
+                </li>
+              </ul>
             </Content>
           </Layout>
         </Sider>

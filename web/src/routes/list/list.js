@@ -61,8 +61,8 @@ class List extends React.Component {
                     <li>
                         <section className={style.item}>
                             <p>
-                                <span className={style.count} style={{background: this.state.theme.count}}>已打卡<i>200</i>次</span>
-                                <span className={style.title}>跑步</span>
+                                <span className={style.count}><span style={{background: this.state.theme.count}}>已打卡<i>200</i>次</span></span>
+                                <span className={style.title}>每天8杯水</span>
                             </p>
                             <div>
                                 <Button type="primary" shape="circle" size="small" icon="check"/>
@@ -75,10 +75,12 @@ class List extends React.Component {
                     <li>
                         <section className={style.item}>
                             <p>
-                                <span>0</span>
-                                <span>跑步</span>
+                                <span className={style.count}><span style={{background: this.state.theme.count}}>已打卡<i>1</i>次</span></span>
+                                <span className={style.title}>跑步</span>
                             </p>
-                            <Button type="primary" shape="circle" size="small" icon="check"/>
+                            <div>
+                                <Button type="dashed" shape="circle" size="small" icon="check"/>
+                            </div>
                         </section>
                     </li>
                 </ul>

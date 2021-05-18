@@ -5,12 +5,14 @@ import {
     Row,
     Col,
     Input,
-    Button
+    Button,
+    Checkbox,
+    Rate
 } from 'antd';
 const {Content, Sider, Header, Footer} = Layout;
 import {connect} from 'dva';
 import {hashHistory} from 'dva/router';
-import style from './list.less';
+import style from './todo.less';
 
 class List extends React.Component {
     state = {
@@ -37,7 +39,7 @@ class List extends React.Component {
                         className={style.add_input}
                         placeholder="添加任务..."
                         style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         background: this.state.theme.bg_opacity
                     }}></Input>
                     <Row gutter={10}>
@@ -58,25 +60,20 @@ class List extends React.Component {
                 <ul className={style.items}>
                     <li>
                         <section className={style.item}>
-                            <p>
-                                <span>0</span>
-                                <span>跑步</span>
-                            </p>
-                            <div>
-                                <Button type="primary" shape="circle" size="small" icon="check"/>
-                                <Button type="primary" shape="circle" size="small" icon="check"/>
-                                <Button type="dashed" shape="circle" size="small" icon="check"/>
-                                <Button type="dashed" shape="circle" size="small" icon="check" disabled/>
-                            </div>
+                            <Checkbox
+                                style={{
+                                fontSize: 14
+                            }}>跑步</Checkbox>
+                            <Button type="primary" shape="circle" size="small" icon="star"/>
                         </section>
                     </li>
                     <li>
                         <section className={style.item}>
-                            <p>
-                                <span>0</span>
-                                <span>跑步</span>
-                            </p>
-                            <Button type="primary" shape="circle" size="small" icon="check"/>
+                            <Checkbox
+                                style={{
+                                fontSize: 14
+                            }}>跑步</Checkbox>
+                            <Button type="dashed" shape="circle" size="small" icon="star"/>
                         </section>
                     </li>
                 </ul>
