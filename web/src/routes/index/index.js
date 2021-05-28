@@ -67,7 +67,7 @@ class Main extends React.Component {
                   <Avatar
                     style={{
                     backgroundColor: '#ffbf00'
-                  }}>张三</Avatar>
+                  }}>杨浩</Avatar>
                   <span
                     style={{
                     fontSize: 14,
@@ -134,9 +134,12 @@ class Main extends React.Component {
             <span style={{
               fontSize: 16
             }}>打卡列表</span>
-            <ul>
+            <ul className={style.operate}>
               <li>
                 <a className={style.content_header_a} href="">共享</a>
+              </li>
+              <li>
+                <a className={style.content_header_a} href="">切换主题</a>
               </li>
             </ul>
           </header>

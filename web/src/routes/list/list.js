@@ -12,6 +12,8 @@ import {
     message
 } from 'antd';
 const {Content, Sider, Header, Footer} = Layout;
+const ButtonGroup = Button.Group;
+const {TextArea} = Input;
 import {connect} from 'dva';
 import {hashHistory} from 'dva/router';
 import style from './list.less';
@@ -44,7 +46,11 @@ class List extends React.Component {
 
             cards: [],
 
-            data: data
+            data: data,
+
+            detail: {
+                name: '每天一杯水'
+            }
         }
     }
     changeName = (event) => {
@@ -88,14 +94,22 @@ class List extends React.Component {
         console.log(row)
     }
     saveNewTarget = () => {
-        let cards = this.state.cards
         if (!this.state.name) {
             message.error('输入打卡任务名哟!')
             return
         }
-        cards.push({name: this.state.name, times: this.state.times, days: this.state.days})
+        this.setState({
+            data: [
+                ...this.state.data, {
+                    name: this.state.name,
+                    times: this.state.times,
+                    days: this.state.days,
+                    finished: 0,
+                    counts: 0
+                }
+            ]
+        })
         this.clearTarget()
-        this.setState({cards: cards})
         message.success('已生成新的打卡任务,加油哟!');
     }
     render() {
@@ -133,6 +147,26 @@ class List extends React.Component {
                 {day_item}
             </section>
         )
+        let operate_days = (
+            <ButtonGroup className={style.operate_days}>
+                {valid_days.map((day) => {
+                    return (
+                        <Button
+                            type={`${this
+                            .state
+                            .days
+                            .indexOf(day) > -1
+                            ? 'primary'
+                            : 'dashed'}`}
+                            key={day}
+                            onClick={this
+                            .chooseDay
+                            .bind(this, day)}
+                            size="small">{day}</Button>
+                    )
+                })}
+            </ButtonGroup>
+        )
         let times = (
             <p>
                 <InputNumber
@@ -152,7 +186,9 @@ class List extends React.Component {
                     shape="circle"
                     size="small"
                     icon="check"
-                    onClick={this.finishTarget.bind(this, data)}
+                    onClick={this
+                    .finishTarget
+                    .bind(this, data)}
                     disabled={i - data.finished > 0}/>)
             }
             return (
@@ -163,7 +199,8 @@ class List extends React.Component {
                                 <span
                                     style={{
                                     background: this.state.theme.count
-                                }}><i>{data.counts}</i>次</span>
+                                }}>
+                                    <i>{data.counts}</i>次</span>
                             </span>
                             <span className={style.title}>{data.name}</span>
                         </p>
@@ -232,6 +269,75 @@ class List extends React.Component {
                 <ul className={style.items}>
                     {data}
                 </ul>
+                <div className={style.detail}>
+                    <h5>
+                        <Icon
+                            type="menu-unfold"
+                            style={{
+                            fontSize: 14
+                        }}/>
+                        <span>{this.state.detail.name}</span>
+                        <Icon
+                            type="delete"
+                            style={{
+                            fontSize: 14
+                        }}/></h5>
+                    <div className={style.item}>
+                        <Icon
+                            type="calendar"
+                            style={{
+                            fontSize: 16,
+                            padding: '2px 10px'
+                        }}/>
+                        <div>{operate_days}</div>
+                    </div>
+                    <div className={style.item}>
+                        <Icon
+                            type="ellipsis"
+                            style={{
+                            fontSize: 16,
+                            padding: '2px 10px'
+                        }}/>
+                        <div>{times}</div>
+                    </div>
+                    <div className={style.item}>
+                        <Icon
+                            type="star-o"
+                            style={{
+                            fontSize: 16,
+                            padding: '2px 10px'
+                        }}/>
+                        <div>
+                            <Button
+                                type="primary"
+                                shape="circle"
+                                size="small"
+                                icon="check"/>
+                            <Button
+                                type="primary"
+                                shape="circle"
+                                size="small"
+                                icon="check"/>
+                            <Button
+                                type="primary"
+                                shape="circle"
+                                size="small"
+                                icon="check"/></div>
+                    </div>
+                    <div
+                        className={style.item}
+                        style={{
+                        alignItems: 'flex-start'
+                    }}>
+                        <Icon
+                            type="edit"
+                            style={{
+                            fontSize: 16,
+                            padding: '2px 10px'
+                        }}/>
+                        <TextArea rows={4}/>
+                    </div>
+                </div>
             </section>
         );
     }
