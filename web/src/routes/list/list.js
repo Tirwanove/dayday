@@ -50,7 +50,9 @@ class List extends React.Component {
 
             detail: {
                 name: '每天一杯水'
-            }
+            },
+
+            show_detail: false
         }
     }
     changeName = (event) => {
@@ -90,8 +92,9 @@ class List extends React.Component {
             ]
         })
     }
-    finishTarget = (row) => {
+    finishTarget = (e, row) => {
         console.log(row)
+        e.stopPropagation()
     }
     saveNewTarget = () => {
         if (!this.state.name) {
@@ -111,6 +114,9 @@ class List extends React.Component {
         })
         this.clearTarget()
         message.success('已生成新的打卡任务,加油哟!');
+    }
+    showDetail = (state) => {
+        this.setState({show_detail: state})
     }
     render() {
         let valid_days = [
@@ -186,14 +192,13 @@ class List extends React.Component {
                     shape="circle"
                     size="small"
                     icon="check"
-                    onClick={this
-                    .finishTarget
-                    .bind(this, data)}
+                    onClick={(e) => this
+                    .finishTarget(e, data)}
                     disabled={i - data.finished > 0}/>)
             }
             return (
                 <li>
-                    <section className={style.item}>
+                    <section className={style.item} onClick={this.showDetail.bind(this, true)}>
                         <p>
                             <span className={style.count}>
                                 <span
@@ -269,13 +274,13 @@ class List extends React.Component {
                 <ul className={style.items}>
                     {data}
                 </ul>
-                <div className={style.detail}>
+                <div className={`${style.detail} ${style[this.state.show_detail ? '' : 'hide']}`}>
                     <h5>
                         <Icon
                             type="menu-unfold"
                             style={{
                             fontSize: 14
-                        }}/>
+                        }} onClick={this.showDetail.bind(this, false)}/>
                         <span>{this.state.detail.name}</span>
                         <Icon
                             type="delete"
