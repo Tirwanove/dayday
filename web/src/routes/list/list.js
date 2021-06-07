@@ -115,8 +115,9 @@ class List extends React.Component {
         this.clearTarget()
         message.success('已生成新的打卡任务,加油哟!');
     }
-    showDetail = (state) => {
+    showDetail = (state, e) => {
         this.setState({show_detail: state})
+        e.stopPropagation()
     }
     render() {
         let valid_days = [
@@ -158,13 +159,13 @@ class List extends React.Component {
                 {valid_days.map((day) => {
                     return (
                         <Button
+                            key={day}
                             type={`${this
                             .state
                             .days
                             .indexOf(day) > -1
                             ? 'primary'
                             : 'dashed'}`}
-                            key={day}
                             onClick={this
                             .chooseDay
                             .bind(this, day)}
@@ -174,31 +175,32 @@ class List extends React.Component {
             </ButtonGroup>
         )
         let times = (
-            <p>
+            <div>
                 <InputNumber
                     min={1}
                     max={10}
-                    value={this.state.times}
-                    onChange={this.onChange}/>次
-            </p>
+                    defaultValue={this.state.times}
+                    onChange={this.onChange}/>
+                <span>次</span>
+            </div>
         )
         let data = (this.state.data.map((data) => {
             let times = []
             for (let i = 0; i < data.times; i++) {
                 times.push(<Button
+                    key={i}
                     type={`${data.finished > i
                     ? 'primary'
                     : 'dashed'}`}
                     shape="circle"
                     size="small"
                     icon="check"
-                    onClick={(e) => this
-                    .finishTarget(e, data)}
+                    onClick={(e) => this.finishTarget(e, data)}
                     disabled={i - data.finished > 0}/>)
             }
             return (
-                <li>
-                    <section className={style.item} onClick={this.showDetail.bind(this, true)}>
+                <li key={data.name}>
+                    <section className={style.item} onClick={(e) => this.showDetail(true, e)}>
                         <p>
                             <span className={style.count}>
                                 <span
@@ -217,70 +219,78 @@ class List extends React.Component {
             )
         }))
         return (
-            <section className={style.add_item}>
+            <section>
+                <section className={style.add_item} onClick={(e) => this.showDetail(false, e)}>
+                    <div
+                        className={style.add_form}
+                        style={{
+                        backgroundColor: this.state.theme.bg_opacity
+                    }}>
+                        <Icon
+                            type="plus"
+                            style={{
+                            fontSize: 18,
+                            color: '#fff'
+                        }}/>
+                        <Input
+                            className={style.add_input}
+                            placeholder="添加任务..."
+                            value={this.state.name}
+                            onChange={this.changeName}
+                            style={{
+                            fontSize: 14,
+                            background: this.state.theme.bg_opacity
+                        }}></Input>
+                        <Row gutter={10}>
+                            <Col xs={6}>
+                                <Popover
+                                    content={days}
+                                    trigger="click"
+                                    placement="bottom"
+                                    visible={this.state.days_visible}
+                                    onVisibleChange={this.daysVisible}>
+                                    <Button type="primary" shape="circle" icon="calendar"/>
+                                </Popover>
+                            </Col>
+                            <Col xs={6}>
+                                <Popover
+                                    content={times}
+                                    trigger="click"
+                                    placement="bottom"
+                                    visible={this.state.visible}
+                                    onVisibleChange={this.handleVisibleChange}>
+                                    <Button type="primary" shape="circle" icon="ellipsis"/>
+                                </Popover>
+                            </Col>
+                            <Col xs={6}>
+                                <Button
+                                    type="primary"
+                                    shape="circle"
+                                    icon="check"
+                                    onClick={this.saveNewTarget}/>
+                            </Col>
+                            <Col xs={6}>
+                                <Button type="primary" shape="circle" icon="close" onClick={this.clearTarget}/>
+                            </Col>
+                        </Row>
+                    </div>
+                    <ul className={style.items}>
+                        {data}
+                    </ul>
+                </section>
                 <div
-                    className={style.add_form}
-                    style={{
-                    backgroundColor: this.state.theme.bg_opacity
-                }}>
-                    <Icon
-                        type="plus"
-                        style={{
-                        fontSize: 18,
-                        color: '#fff'
-                    }}/>
-                    <Input
-                        className={style.add_input}
-                        placeholder="添加任务..."
-                        value={this.state.name}
-                        onChange={this.changeName}
-                        style={{
-                        fontSize: 14,
-                        background: this.state.theme.bg_opacity
-                    }}></Input>
-                    <Row gutter={10}>
-                        <Col xs={6}>
-                            <Popover
-                                content={days}
-                                trigger="click"
-                                placement="bottom"
-                                visible={this.state.days_visible}
-                                onVisibleChange={this.daysVisible}>
-                                <Button type="primary" shape="circle" icon="calendar"/>
-                            </Popover>
-                        </Col>
-                        <Col xs={6}>
-                            <Popover
-                                content={times}
-                                trigger="click"
-                                placement="bottom"
-                                visible={this.state.visible}
-                                onVisibleChange={this.handleVisibleChange}>
-                                <Button type="primary" shape="circle" icon="ellipsis"/>
-                            </Popover>
-                        </Col>
-                        <Col xs={6}>
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                icon="check"
-                                onClick={this.saveNewTarget}/>
-                        </Col>
-                        <Col xs={6}>
-                            <Button type="primary" shape="circle" icon="close" onClick={this.clearTarget}/>
-                        </Col>
-                    </Row>
-                </div>
-                <ul className={style.items}>
-                    {data}
-                </ul>
-                <div className={`${style.detail} ${style[this.state.show_detail ? '' : 'hide']}`}>
+                    className={`${style.detail} ${style[this.state.show_detail
+                        ? ''
+                        : 'hide']}`}>
                     <h5>
                         <Icon
                             type="menu-unfold"
                             style={{
                             fontSize: 14
-                        }} onClick={this.showDetail.bind(this, false)}/>
+                        }}
+                            onClick={this
+                            .showDetail
+                            .bind(this, false)}/>
                         <span>{this.state.detail.name}</span>
                         <Icon
                             type="delete"
@@ -313,21 +323,9 @@ class List extends React.Component {
                             padding: '2px 10px'
                         }}/>
                         <div>
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                size="small"
-                                icon="check"/>
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                size="small"
-                                icon="check"/>
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                size="small"
-                                icon="check"/></div>
+                            <Button type="primary" shape="circle" size="small" icon="check"/>
+                            <Button type="primary" shape="circle" size="small" icon="check"/>
+                            <Button type="primary" shape="circle" size="small" icon="check"/></div>
                     </div>
                     <div
                         className={style.item}
