@@ -42,7 +42,7 @@ class Main extends React.Component {
               background: this.state.theme.bg
             }}>
               <Icon
-                type="menu-fold"
+                type="bars"
                 style={{
                 fontSize: 18,
                 color: '#fff'
